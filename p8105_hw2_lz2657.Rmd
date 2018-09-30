@@ -20,3 +20,7 @@ NYC_subway_data = read_csv(file = "./data/NYC_Transit_Subway_Entrance_And_Exit_D
   select(line:entry, vending, ada) %>%
   mutate(entry=as.logical(ifelse(entry == 'YES', TRUE, FALSE)))
 ```
+
+The dataset now contains variables of line, station name, station latitude / longitude, routes served, entry, vending, entrance type, and ADA compliance. I read the original dataset, cleaned the names, selected the variables I need and convert the entry variable to logical by 'mutate' and 'ifelse' function.
+
+The dimension of the dataset is `r nrow(NYC_subway_data)` x `r ncol(NYC_subway_data)`. The data is not tidy yet.
