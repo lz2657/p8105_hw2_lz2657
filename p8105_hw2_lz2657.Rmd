@@ -30,3 +30,19 @@ There are `r nrow(distinct(NYC_subway_data, line, station_name))` distinct stati
 `r sum(NYC_subway_data$ada==1)` stations are ADA compliant. 
 
 `r round(100*sum(NYC_subway_data$vending=='NO'&NYC_subway_data$entry==TRUE)/sum(NYC_subway_data$vending=='NO'), digits= 2)`% of station entrances / exits without vending allow entrance.
+
+Then reformat the dataset.
+
+```{r problem1_reformat}
+NYC_subway_data = mutate(NYC_subway_data, route_number = rowSums(!is.na(select(NYC_subway_data, route1:route11)))) %>%
+  unite(route_name, route1:route11, sep='/', remove = TRUE) %>%
+  select(line:station_longitude, route_number, route_name, everything())
+
+NYC_subway_data$route_name = gsub("/NA","",NYC_subway_data$route_name)
+
+NYC_subway_data
+```
+
+There are `r sum((gsub("[^A]","",NYC_subway_data$route_name))=='A')` distinct stations serve the A train.
+
+Of the stations that serve the A train, `r sum(gsub("[^A]","",NYC_subway_data$route_name)=='A'&NYC_subway_data$ada==TRUE)` are ADA compliant.
