@@ -84,3 +84,12 @@ precipitation_2017_data = read_excel("./data/HealthyHarborWaterWheelTotals2017-9
 
 precipitation_2017_data
 ```
+
+Now combine datasets and convert month to a character variable.
+
+```{r problem2_combine}
+precipitation_data = full_join(precipitation_2016_data, precipitation_2017_data, by = NULL) %>%
+  mutate(month = month.name[month])
+
+precipitation_data
+```
