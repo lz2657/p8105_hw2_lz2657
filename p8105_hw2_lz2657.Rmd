@@ -52,7 +52,7 @@ Of the stations that serve the A train, `r sum(gsub("[^A]","",NYC_subway_data$ro
 
 ## Problem 2
 
-First, read and clean the data as required.
+First, read and clean the Mr. Trash Wheel sheet as required.
 
 ```{r problem2_trash_wheel}
 trash_wheel_data = read_excel("./data/HealthyHarborWaterWheelTotals2017-9-26.xlsx", range = cell_cols("A:N")) %>%
@@ -61,4 +61,26 @@ trash_wheel_data = read_excel("./data/HealthyHarborWaterWheelTotals2017-9-26.xls
   mutate(sports_balls=as.integer(round(sports_balls)))
 
 trash_wheel_data
+```
+
+Then read and clean precipitation data for 2016 and 2017.
+
+```{r problem2_2016}
+precipitation_2016_data = read_excel("./data/HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation", range = "A2:B15") %>%
+  janitor::clean_names() %>%
+  filter(!is.na(total)) %>%
+  mutate(year = 2016) %>%
+  select(year, month, total)
+
+precipitation_2016_data
+```
+
+```{r problem2_2017}
+precipitation_2017_data = read_excel("./data/HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2017 Precipitation", range = "A2:B15") %>%
+  janitor::clean_names() %>%
+  filter(!is.na(total)) %>%
+  mutate(year = 2017) %>%
+  select(year, month, total)
+
+precipitation_2017_data
 ```
