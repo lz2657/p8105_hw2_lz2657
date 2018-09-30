@@ -1,0 +1,22 @@
+---
+title: "p8105_hw2_lz2657"
+author: Lingyu Zhang
+date: Sep 30, 2018
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Problem 1
+
+First, read and clean the data as required.
+
+```{r problem1_read_clean}
+NYC_subway_data = read_csv(file = "./data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
+  janitor::clean_names() %>%
+  select(line:entry, vending, ada) %>%
+  mutate(entry=as.logical(ifelse(entry == 'YES', TRUE, FALSE)))
+```
