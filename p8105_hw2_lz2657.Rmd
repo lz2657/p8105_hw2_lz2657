@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 devtools::install_github("p8105/p8105.datasets", force = TRUE)
 library(tidyverse)
 library(readxl)
+library(dplyr)
 library(p8105.datasets)
 ```
 
@@ -117,3 +118,8 @@ brfss_data = brfss_smart2010 %>%
 
 brfss_data
 ```
+
+`r sum(n_distinct(brfss_data$locationdesc))` unique locations are included in the dataset. Every state is represented since there are `r sum(n_distinct(brfss_data$locationabbr))` different location abbreviations. `r names(which.max(table(brfss_data$locationabbr)))` is observed the most. 
+
+In 2002, the median of the “Excellent” response value is `r median(na.omit(subset(brfss_data, year == 2002)$excellent))`.
+
