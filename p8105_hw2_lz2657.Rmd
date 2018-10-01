@@ -12,6 +12,7 @@ library(tidyverse)
 library(readxl)
 library(dplyr)
 library(p8105.datasets)
+library(ggplot2)
 ```
 
 ## Problem 1
@@ -123,3 +124,16 @@ brfss_data
 
 In 2002, the median of the “Excellent” response value is `r median(na.omit(subset(brfss_data, year == 2002)$excellent))`.
 
+Now make a histogram of “Excellent” response values in the year 2002
+
+```{r problem3_histogram}
+ggplot(subset(brfss_data, year == 2002), aes(x = excellent)) + 
+  geom_histogram()
+```
+
+Then make a scatterplot showing the proportion of “Excellent” response values in New York County and Queens County in each year from 2002 to 2010.
+
+```{r scatterplot}
+ggplot(subset(brfss_data, locationdesc == "NY - New York County" | locationdesc == "NY - Queens County"), aes(x = year, y = excellent)) + 
+  geom_point(aes(color = locationdesc))
+```
