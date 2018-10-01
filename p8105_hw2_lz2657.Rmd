@@ -7,8 +7,10 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+devtools::install_github("p8105/p8105.datasets", force = TRUE)
 library(tidyverse)
 library(readxl)
+library(p8105.datasets)
 ```
 
 ## Problem 1
@@ -95,3 +97,23 @@ precipitation_data
 ```
 
 The Mr. Trash Wheel dataset includes 14 variables, including dumpster, date, weight, volume, sports_balls and so on. The number of observations is `r nrow(trash_wheel_data)`. The precipitation dataset includes three variables: year, month and total. It shows the precipitation data for each month in 2016 and 2017. The number of precipitations is `r nrow(precipitation_data)`. The total precipitation in 2017 is `r sum(ifelse((precipitation_data$year == 2017), precipitation_data$total, 0))`. The median number of sports balls in a dumpster in 2016 is `r median(subset(trash_wheel_data, year == 2016)$sports_balls)`.
+
+
+
+## Problem 3
+
+First, read and manipulate the data as required.
+
+```{r problem3_read_manipulate}
+data("brfss_smart2010")
+brfss_data = brfss_smart2010 %>%
+  janitor::clean_names() %>%
+  filter(topic == "Overall Health") %>%
+  select(-class, -topic, -question, -sample_size, -(confidence_limit_low:geo_location)) %>%
+  spread(key = response, value = data_value) %>%
+  janitor::clean_names() %>%
+  select(year, locationabbr, locationdesc, excellent, very_good, good, fair, poor) %>%
+  mutate(proportion = excellent + very_good)
+
+brfss_data
+```
