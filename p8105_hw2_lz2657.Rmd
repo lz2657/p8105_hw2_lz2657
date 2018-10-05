@@ -23,7 +23,7 @@ First, read and clean the data as required.
 NYC_subway_data = read_csv(file = "./data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
   janitor::clean_names() %>%
   select(line:entry, vending, ada) %>%
-  mutate(entry=as.logical(ifelse(entry == 'YES', TRUE, FALSE)))
+  mutate(entry = as.logical(ifelse(entry == 'YES', TRUE, FALSE)))
 ```
 
 The dataset now contains variables of line, station name, station latitude / longitude, routes served, entry, vending, entrance type, and ADA compliance. I read the original dataset, cleaned the names, selected the variables I need and convert the entry variable to logical by 'mutate' and 'ifelse' function.
@@ -32,25 +32,25 @@ The dimension of the dataset is `r nrow(NYC_subway_data)` x `r ncol(NYC_subway_d
 
 There are `r nrow(distinct(NYC_subway_data, line, station_name))` distinct stations. 
 
-`r sum(NYC_subway_data$ada==1)` stations are ADA compliant. 
+`r sum(NYC_subway_data$ada == 1)` stations are ADA compliant. 
 
-`r round(100*sum(NYC_subway_data$vending=='NO'&NYC_subway_data$entry==TRUE)/sum(NYC_subway_data$vending=='NO'), digits= 2)`% of station entrances / exits without vending allow entrance.
+`r round(100*sum(NYC_subway_data$vending == 'NO' & NYC_subway_data$entry == TRUE) / sum(NYC_subway_data$vending == 'NO'), digits = 2)`% of station entrances / exits without vending allow entrance.
 
 Then reformat the dataset.
 
 ```{r problem1_reformat}
 NYC_subway_data = mutate(NYC_subway_data, route_number = rowSums(!is.na(select(NYC_subway_data, route1:route11)))) %>%
-  unite(route_name, route1:route11, sep='/', remove = TRUE) %>%
+  unite(route_name, route1:route11, sep = '/', remove = TRUE) %>%
   select(line:station_longitude, route_number, route_name, everything())
 
-NYC_subway_data$route_name = gsub("/NA","",NYC_subway_data$route_name)
+NYC_subway_data$route_name = gsub("/NA", "", NYC_subway_data$route_name)
 
 NYC_subway_data
 ```
 
-There are `r sum((gsub("[^A]","",NYC_subway_data$route_name))=='A')` distinct stations serve the A train.
+There are `r sum((gsub("[^A]", "", NYC_subway_data$route_name)) == 'A')` distinct stations serve the A train.
 
-Of the stations that serve the A train, `r sum(gsub("[^A]","",NYC_subway_data$route_name)=='A'&NYC_subway_data$ada==TRUE)` are ADA compliant.
+Of the stations that serve the A train, `r sum(gsub("[^A]", "", NYC_subway_data$route_name) == 'A' & NYC_subway_data$ada == TRUE)` are ADA compliant.
 
 
 
@@ -62,7 +62,7 @@ First, read and clean the Mr. Trash Wheel sheet as required.
 trash_wheel_data = read_excel("./data/HealthyHarborWaterWheelTotals2018-7-28.xlsx", range = cell_cols("A:N")) %>%
   janitor::clean_names() %>%
   filter(!is.na(dumpster)) %>%
-  mutate(sports_balls=as.integer(round(sports_balls)))
+  mutate(sports_balls = as.integer(round(sports_balls)))
 
 trash_wheel_data
 ```
